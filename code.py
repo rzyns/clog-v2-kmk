@@ -8,7 +8,7 @@ from kmk.keys import KC, Key
 from kmk.modules import Module
 from kmk.scanners import DiodeOrientation
 
-from kmk.extensions.media_keys import MediaKeys
+from kmk.modules.encoder import EncoderHandler
 from kmk.modules.modtap import ModTap
 from kmk.modules.layers import Layers
 from kmk.modules.split import Split, SplitType
@@ -45,6 +45,9 @@ keyboard.coord_mapping = [
 ]
 
 keyboard.diode_orientation = DiodeOrientation.ROW2COL
+
+encoder_handler = EncoderHandler()
+keyboard.modules.append(encoder_handler)
 
 modtap = ModTap()
 modtap.tap_time = 250
@@ -123,7 +126,19 @@ keyboard.keymap = [
     # ],
 ]
 
-keyboard.modules.append(DebugKeys())
+keyboard.debug_enabled = True
+
+encoder_handler.pins = ((board.D0, board.D1, None, False),)
+encoder_handler.map = (
+    ((KC.W,  KC.S,  KC.NO, ),),
+    ((KC.A,  KC.D,  KC.NO, ),),
+    ((KC.N1, KC.N2, KC.NO, ),),
+    ((KC.N3, KC.N4, KC.NO, ),),
+    ((KC.N5, KC.N6, KC.NO, ),),
+    ((KC.N5, KC.N6, KC.NO, ),),
+)
+
+# keyboard.modules.append(DebugKeys())
 
 if __name__ == '__main__':
     # keyboard.go(hid_type=HIDModes.BLE, ble_name='CLOGv2-KMK')
